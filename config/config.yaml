@@ -57,6 +57,8 @@ output:
   output_dir: './results/'
   logging: './logging/'
 model:
+  # "gravnet" (default, reproduces current behavior) or "hept"
+  backbone: hept
   k: 54 
   blocks: 4 
   n_objects: 15
@@ -65,3 +67,14 @@ model:
   dim1: 126
   dim2: 16
   momentum: 0.77
+
+  # only read when backbone == hept; ignored otherwise
+  hept_kwargs:
+    h_dim: 64
+    n_layers: 4
+    num_heads: 4
+    block_size: 100
+    n_hashes: 3
+    num_regions: 100
+    num_w_per_dist: 10
+    dropout: 0.1

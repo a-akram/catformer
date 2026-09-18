@@ -13,3 +13,5 @@
 *.pt
 results/*
 venv/*
+hept_patch
+eggn_patch

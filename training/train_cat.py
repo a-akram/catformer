@@ -48,6 +48,8 @@ if __name__ == "__main__":
     # set input dim to feature size
     net = gnn_model.CDCNet(
         input_dim=len(config["dataset"]["input_features"]),
+        backbone=config["model"].get("backbone", "gravnet"),
+        backbone_kwargs=config["model"].get("hept_kwargs", {}),
         k=config["model"]["k"],
         nblocks=config["model"]["blocks"],
         coord_dim=config["model"]["coord_dim"],
