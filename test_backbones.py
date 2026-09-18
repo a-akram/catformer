@@ -78,4 +78,14 @@ if __name__ == "__main__":
             dropout=0.0,
         ),
     )
+    run_case(
+        "eggnet",
+        backbone_kwargs=dict(
+            node_rep_dim=32,
+            edge_rep_dim=16,
+            n_iters=2,
+            n_gnns_per_iter=2,
+            knn_train=8,
+        ),
+    )
     print("\nAll smoke tests passed.")

@@ -57,8 +57,8 @@ output:
   output_dir: './results/'
   logging: './logging/'
 model:
-  # "gravnet" (default, reproduces current behavior) or "hept"
-  backbone: hept
+  # "gravnet" (default, reproduces current behavior), "hept", or "eggnet"
+  backbone: gravnet
   k: 54 
   blocks: 4 
   n_objects: 15
@@ -78,3 +78,16 @@ model:
     num_regions: 100
     num_w_per_dist: 10
     dropout: 0.1
+    
+  # only read when backbone == eggnet; ignored otherwise
+  eggnet_kwargs:
+    node_rep_dim: 64
+    edge_rep_dim: 64
+    n_iters: 2          # upstream default is 4; start smaller for CDC hit counts
+    n_gnns_per_iter: 2  # upstream default is 8; ditto
+    encoder_hidden: 64
+    node_0_hidden: 64
+    edge_hidden: 64
+    node_hidden: 64
+    knn_train: 10
+    embedding_norm: true

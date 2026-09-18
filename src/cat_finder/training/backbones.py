@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from torch_geometric.nn import GravNetConv, BatchNorm, global_mean_pool
 
 from .hept_backend.transformer import Transformer
+from .eggn_backend.eggnet_core import EggNetCore
 
 
 class GravNetBackbone(nn.Module):
@@ -133,7 +134,25 @@ class HEPTBackbone(nn.Module):
         return self.net(x, coords, batch)
 
 
+class EggNetBackbone(nn.Module):
+    """Thin adapter around the adapted EggNet core (Calafiura et al.,
+    arXiv:2407.13925 / github.com/exatrkx/EggNet, Apache-2.0). See
+    eggnet_backend/eggnet_core.py's docstring for exactly what was changed
+    from upstream and why.
+
+    forward(x, batch) -> Tensor[N_hits, out_dim]
+    """
+
+    def __init__(self, input_dim, out_dim, **eggnet_kwargs):
+        super().__init__()
+        self.net = EggNetCore(input_dim=input_dim, out_dim=out_dim, **eggnet_kwargs)
+
+    def forward(self, x, batch):
+        return self.net(x, batch)
+
+
 BACKBONES = {
     "gravnet": GravNetBackbone,
     "hept": HEPTBackbone,
+    "eggnet": EggNetBackbone,
 }

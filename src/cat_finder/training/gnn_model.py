@@ -63,17 +63,18 @@ class CDCNet(nn.Module):
                 space_dimensions=space_dimensions,
                 momentum=momentum,
             )
-        elif backbone == "hept":
-            # note: unlike GravNetBackbone, HEPT does its own global mixing via
-            # attention, so it takes the raw input_dim-wide, batch-normed x
-            # directly — CDCNet.forward() below is identical for both backbones.
-            self.backbone = BACKBONES["hept"](
+        elif backbone in ("hept", "eggnet"):
+            # note: unlike GravNetBackbone, neither HEPT nor EggNet needs the
+            # global-exchange pre-step — both do their own global mixing via
+            # attention/message-passing — so CDCNet.forward() below is
+            # identical for all three backbones.
+            self.backbone = BACKBONES[backbone](
                 input_dim=input_dim,
                 out_dim=out_dim,
                 **(backbone_kwargs or {}),
             )
         else:
-            raise ValueError(f"Unknown backbone '{backbone}', expected 'gravnet' or 'hept'")
+            raise ValueError(f"Unknown backbone '{backbone}', expected 'gravnet', 'hept', or 'eggnet'")
 
         # there are skip connections between the blocks (gravnet) / a single
         # readout (hept); this layer is unchanged from upstream either way
